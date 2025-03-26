@@ -10,3 +10,4 @@ pyOpenSSL==23.2.0
 psycopg2-binary==2.9.5
 boto3==1.26.0
 Google-Cloud-Storage==2.7.0
+psycopg2==2.9.5
