@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SpendiZO</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='design-system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="/" style="text-decoration: none; display: flex; align-items: center;">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="SpendiZO Logo" style="height: 40px; margin-right: 10px;">
+            </a>
+        </div>
+    </nav>
+
+    <div class="form-container">
+        <h1 class="form-title">Welcome Back</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-error">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form action="{{ url_for('login') }}" method="POST">
+            <div class="form-group">
+                <label for="username" class="form-label">Username:</label>
+                <input type="text" id="username" name="username" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" id="password" name="password" class="form-input" required>
+            </div>
+            
+            <div class="form-group remember-me">
+                <input type="checkbox" id="remember" name="remember" class="form-checkbox">
+                <label for="remember" class="checkbox-label">Remember me</label>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary submit-button">Login</button>
+            </div>
+            <div class="oauth-divider">
+                <span>or</span>
+            </div>
+            <a href="{{ url_for('google_login') }}" class="btn btn-secondary google-login-button">
+                <img src="{{ url_for('static', filename='google-icon.svg') }}" alt="Google Icon" style="margin-right: 8px;">
+                Sign in with Google
+            </a>
+            <p class="form-footer">Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+        </form>
+    </div>
+</body>
+</html>

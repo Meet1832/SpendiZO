@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=production
+      - SECRET_KEY=your-production-secret-key-here
+      - DATABASE_URL=sqlite:///database.db
+      # Uncomment for PostgreSQL
+      # - DATABASE_URL=postgresql://postgres:postgres@db:5432/expense_tracker
+    volumes:
+      - ./static/receipts:/app/static/receipts
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=expense_tracker
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  postgres_data:

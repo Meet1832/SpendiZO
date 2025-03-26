@@ -1,0 +1,121 @@
+/* Login Page Specific Styles */
+.form-container {
+    max-width: 450px;
+    margin: 100px auto 30px;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
+.form-title {
+    font-size: 1.75rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 700;
+}
+
+.form-input {
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    padding: 0.75rem 1rem;
+    background-color: var(--background-color);
+}
+
+.form-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.submit-button {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.google-login-button {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.google-login-button:hover {
+    transform: translateY(-2px);
+    background-color: var(--background-color);
+    box-shadow: var(--shadow-md);
+}
+
+.google-login-button img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.form-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.form-footer a {
+    color: var(--primary-color);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.form-checkbox {
+    margin-right: 0.5rem;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary-color);
+}
+
+.checkbox-label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    cursor: pointer;
+}
+
+.alert {
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    text-align: center;
+}
+
+.alert-error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}

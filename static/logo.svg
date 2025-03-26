@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" width="200" height="50">
+  <!-- Background Circle -->
+  <circle cx="30" cy="25" r="20" fill="#4A90E2"/>
+  
+  <!-- Rupee Symbol -->
+  <text x="30" y="35" font-family="Inter, sans-serif" font-size="28" font-weight="600" fill="white" text-anchor="middle">₹</text>
+  
+  <!-- SpendiZO Text -->
+  <text x="70" y="33" font-family="Inter, sans-serif" font-size="24" font-weight="600" fill="#2C3E50">SpendiZO</text>
+</svg>

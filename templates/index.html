@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendiZO - Expense Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='design-system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='budget.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="/" style="text-decoration: none; display: flex; align-items: center;">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="SpendiZO Logo" style="height: 40px; margin-right: 10px;">
+            </a>
+            <div class="nav-links">
+                <a href="/add_expense" class="nav-link">Add Expense</a>
+                <a href="/budget" class="nav-link">Budget</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary logout-button">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <!-- Charts Section -->
+        <div class="charts-grid">
+            <div class="chart-container">
+                <canvas id="categoryChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="monthlyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3 class="card-title">Total Expenses</h3>
+                <p class="card-value">Rs. {{ "%.2f"|format(total_amount) }}</p>
+            </div>
+            <div class="summary-card">
+                <h3 class="card-title">This Month</h3>
+                <p class="card-value">Rs. {{ "%.2f"|format(monthly_amount) }}</p>
+            </div>
+            <div class="summary-card">
+                <h3 class="card-title">Categories</h3>
+                <p class="card-value">{{ categories_count }}</p>
+            </div>
+        </div>
+
+        <!-- Expense Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <h2>Recent Expenses</h2>
+            </div>
+            <table class="expense-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Receipt</th>
+
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if expenses %}
+                        {% for expense in expenses %}
+                        <tr>
+                            <td>{{ expense[0] }}</td>
+                            <td><span class="category-tag">{{ expense[1] }}</span></td>
+                            <td>Rs. {{ "%.2f"|format(expense[2]) }}</td>
+                            <td>{{ expense[3] }}</td>
+                            <td>
+                                {% if expense[6] %}
+                                <a href="{{ url_for('static', filename=expense[6]) }}" target="_blank">
+                                    <img src="{{ url_for('static', filename=expense[6]) }}" alt="Receipt" style="max-width: 50px; max-height: 50px;">
+                                </a>
+                                {% else %}
+                                No Receipt
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <form action="/delete_expense" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this expense?');">
+                                    <input type="hidden" name="expense_id" value="{{ expense[4] }}">
+                                    <button type="submit" class="btn btn-danger delete-button">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align: center;">No expenses found</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="action-container">
+            <a href="/add_expense" class="btn btn-primary add-button">Add New Expense</a>
+        </div>
+    </main>
+    <script>
+        // Category Distribution Chart
+        const categoryData = {
+            labels: {{ categories|tojson|safe }},
+            datasets: [{
+                data: {{ category_amounts|tojson|safe }},
+                backgroundColor: [
+                    '#FF6384', // Pink
+                    '#36A2EB', // Blue
+                    '#FFCE56', // Yellow
+                    '#4BC0C0', // Teal
+                    '#9966FF', // Purple
+                    '#FF9F40', // Orange
+                    '#4CAF50', // Green
+                    '#9C27B0', // Deep Purple
+                    '#607D8B', // Blue Grey
+                    '#795548'  // Brown
+                ],
+                borderWidth: 1,
+                hoverOffset: 4
+            }]
+        };
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'doughnut',
+            data: categoryData,
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Expense Distribution by Category'
+                    }
+                }
+            }
+        });
+
+        // Monthly Trend Chart
+        const monthlyData = {
+            labels: {{ monthly_labels|tojson|safe }},
+            datasets: [{
+                label: 'Monthly Expenses',
+                data: {{ monthly_amounts|tojson|safe }},
+                borderColor: '#36A2EB',
+                backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                borderWidth: 2,
+                tension: 0.1,
+                fill: true,
+                pointBackgroundColor: '#36A2EB',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+            }]
+        };
+        new Chart(document.getElementById('monthlyChart'), {
+            type: 'line',
+            data: monthlyData,
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Expense Trend'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
