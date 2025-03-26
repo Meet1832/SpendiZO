@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import psycopg2
 from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -56,7 +57,7 @@ def get_db_connection():
     if database_url.startswith('sqlite:///'):
         # SQLite connection
         db_path = database_url.replace('sqlite:///', '')
-        conn = sqlite3.connect(db_path)
+        conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
         conn.row_factory = sqlite3.Row
         return conn
     else:
@@ -70,13 +71,13 @@ def get_db_connection():
         except ImportError:
             # Fallback to SQLite if SQLAlchemy is not available
             app.logger.warning("SQLAlchemy not available, falling back to SQLite")
-            conn = sqlite3.connect('database.db')
+            conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
             conn.row_factory = sqlite3.Row
             return conn
 
 # Initialize database
 def init_db():
-    connection = sqlite3.connect('database.db')
+    connection = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
     cursor = connection.cursor()
     
     # Drop existing tables if they exist
